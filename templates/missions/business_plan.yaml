@@ -1,0 +1,40 @@
+id: business_plan
+name: Business plan / growth strategy
+short: Construire la trajectoire 3 à 5 ans et les leviers de croissance d'une entreprise.
+icon: trending-up
+color: navy
+default_deliverables: [deck, report, exec_summary]
+estimated_duration_min: 60
+agents:
+  - framer
+  - hunter
+  - analyst
+  - strategist
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_slides: 15
+    duration_min: 20
+  standard:
+    max_slides: 25
+    duration_min: 50
+  deep:
+    max_slides: 40
+    duration_min: 100
+brief_hints:
+  - Entreprise concernée
+  - Horizon du plan
+  - Objectifs (CA, EBITDA, market share)
+  - Points de départ (performance actuelle, upload bienvenu)
+form_fields:
+  - key: company
+    label: Entreprise
+    required: true
+  - key: horizon_years
+    label: Horizon
+    default: 3 ans
+  - key: ambition
+    label: Ambition stratégique
+    multiline: true

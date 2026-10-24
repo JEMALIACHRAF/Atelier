@@ -1,0 +1,49 @@
+id: due_diligence
+name: Due diligence M&A
+short: "Évaluer une cible: red flags, risques, upside, questions à poser."
+icon: shield
+color: warn
+default_deliverables: [report, exec_summary]
+estimated_duration_min: 60
+agents:
+  - framer
+  - hunter
+  - analyst
+  - risk_scorer
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_risks: 10
+    max_categories: 4
+    max_slides: 12
+    duration_min: 20
+  standard:
+    max_risks: 20
+    max_categories: 6
+    max_slides: 25
+    duration_min: 50
+  deep:
+    max_risks: 40
+    max_categories: 8
+    max_slides: 40
+    duration_min: 100
+brief_hints:
+  - Nom et secteur de la cible
+  - Type de deal (acquisition, prise de participation)
+  - Fourchette de valorisation
+  - Points de vigilance clients
+  - Documents à analyser (upload fortement recommandé)
+form_fields:
+  - key: target_company
+    label: Nom de la cible
+    required: true
+  - key: deal_type
+    label: Type de deal
+    options: [Acquisition, Prise de participation, Fusion, LBO, Investissement minoritaire]
+  - key: valuation_range
+    label: Fourchette de valorisation
+  - key: red_flags_focus
+    label: Points de vigilance connus
+    multiline: true

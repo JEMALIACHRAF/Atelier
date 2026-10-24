@@ -1,0 +1,22 @@
+# 7 decisions
+d.add_heading("7. Les 4 decisions pour Invent", 1)
+para("L'attribution passe en tete : sans rattachement des actifs groupe a Invent, aucun angle 2027 ne profite a Invent.")
+table([["#", "Decision", "Horizon", "Owner", "KPI"],
+       ["1", "Lancer un chantier d'attribution : rattacher publiquement a Invent des actifs IA du groupe (offre, partenariat ou etude)", "6 mois", "Direction de Capgemini Invent + marketing d'offres", "Actifs IA publiquement attribues a Invent : baseline 0 [D66], cible >= 2"],
+       ["2", "Soumettre l'angle \"IA agentique souveraine europeenne\" au test go/no-go avant de l'adopter", "T1-T2 2027", "CEO d'Invent", "4 tests valides ; no-go si l'attribution echoue a 6 mois ou si >= 2 concurrents ont >= 2 partenariats souverains equivalents"],
+       ["3", "Ne pas construire le positionnement 2027 sur l'echelle ni sur le seul outcome-based [D30 ; D42, non verifie a la source primaire]", "Immediat (cadrage du message 2027)", "Direction d'Invent", "Aucun claim d'echelle dans les supports Invent 2027"],
+       ["4", "Relancer l'etude en mode standard avant toute communication de positionnement", "4 semaines", "Chief / equipe engagement", "D2, D3, D4 passees de non conclusive a conclusive ; >= 80 % des S# cites verifies au primaire"]], [0.8, 6.0, 2.2, 3.2, 4.2], 8.5)
+
+# 8 limites
+d.add_heading("8. Limites de perimetre et plan de rerun en mode standard", 1)
+bl([("Mode express :", "2 rerolls Hunter, budget data clos ; les scores sont un pre-brief, pas une evaluation finale."),
+    ("Perimetre :", "PwC retire, D3 fusionnee, chiffres majoritairement groupe et mondial ; vue Europe quasi absente."),
+    ("Qualite des sources :", "seules 8 sources sur 67 sont verifiees par fetch ; D22 (S7, S8, S9) et D42 (S37), qui portent l'angle 2027 et la decision 3, sont non verifies a la source primaire.")])
+para("Lacunes a traiter en mode standard, par priorite (decision 4) :", bold=True)
+for i, t in enumerate(["Rattachement a Invent : pages d'offres capgemini.com/invent, communiques, organigramme Data & AI [D66, D69].",
+                       "Tiers hyperscalers via AWS Partner Finder, Microsoft Partner Finder et Google Cloud Partner Advantage, pour tous les acteurs [D65].",
+                       "Effectifs data & IA : document d'enregistrement universel Capgemini, transcript du CMD, Deloitte AI & Data ; repartition Europe [D68, D69, D37].",
+                       "References clients agentiques, au total, en Europe et dans l'industrie (DP02, DP04) ; partenariats souverains des concurrents (DP07), dont qualification des listings McKinsey [D63].",
+                       "D3 : programmes speakers (VivaTech 2024/2026, Web Summit, London Tech Week), reprises presse (DP09) ; reintegration de PwC ; verification au primaire de S7, S8, S9 et S37."], 1):
+    d.add_paragraph(t, style="List Number")
+

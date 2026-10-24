@@ -1,0 +1,49 @@
+{
+  "LOG": true,
+  "HOST": "127.0.0.1",
+  "PORT": 3456,
+  "Providers": [
+    {
+      "name": "anthropic",
+      "api_base_url": "https://api.anthropic.com/v1/messages",
+      "api_key": "$ANTHROPIC_API_KEY",
+      "models": [
+        "claude-opus-4-7",
+        "claude-sonnet-5-5",
+        "claude-haiku-5-5"
+      ]
+    },
+    {
+      "name": "openai",
+      "api_base_url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "$OPENAI_API_KEY",
+      "models": [
+        "gpt-5",
+        "gpt-5-mini"
+      ]
+    },
+    {
+      "name": "moonshot",
+      "api_base_url": "https://api.moonshot.ai/v1/chat/completions",
+      "api_key": "$MOONSHOT_API_KEY",
+      "models": [
+        "kimi-k2"
+      ]
+    },
+    {
+      "name": "google",
+      "api_base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "api_key": "$GOOGLE_API_KEY",
+      "models": [
+        "gemini-2.5-pro"
+      ]
+    }
+  ],
+  "Router": {
+    "default": "anthropic,claude-sonnet-5-5",
+    "background": "moonshot,kimi-k2",
+    "think": "anthropic,claude-opus-4-7",
+    "longContext": "google,gemini-2.5-pro",
+    "webSearch": "anthropic,claude-sonnet-5-5"
+  }
+}

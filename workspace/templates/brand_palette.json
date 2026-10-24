@@ -1,0 +1,43 @@
+{
+  "name": "Atelier - BCG-inspired",
+  "colors": {
+    "primary": "#003a70",
+    "primary_dark": "#002548",
+    "primary_light": "#1a5490",
+    "accent": "#c76b2b",
+    "accent_dark": "#a85621",
+    "ink": "#1a2332",
+    "ink_2": "#4a5468",
+    "ink_mute": "#8a94a6",
+    "rule": "#e2e5ea",
+    "paper": "#fafbfc",
+    "white": "#ffffff",
+    "ok": "#2e7d4f",
+    "warn": "#c87d2a",
+    "crit": "#b93838"
+  },
+  "categorical": [
+    "#003a70",
+    "#c76b2b",
+    "#2e7d4f",
+    "#8a94a6",
+    "#6a3d8f",
+    "#b93838",
+    "#1a5490",
+    "#a85621"
+  ],
+  "fonts": {
+    "serif": "Source Serif Pro",
+    "sans": "Source Sans Pro",
+    "mono": "JetBrains Mono"
+  },
+  "chart_defaults": {
+    "figure_size": [12, 8],
+    "dpi": 150,
+    "title_size": 16,
+    "label_size": 12,
+    "tick_size": 10,
+    "source_size": 8,
+    "grid_alpha": 0.3
+  }
+}

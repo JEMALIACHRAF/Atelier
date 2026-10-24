@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(python *)",
+      "Bash(py *)",
+      "Bash(pip *)",
+      "Bash(pip3 *)",
+      "Bash(mkdir *)",
+      "Bash(ls *)",
+      "Bash(dir *)",
+      "Bash(type *)",
+      "Bash(powershell *)",
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "WebFetch",
+      "WebSearch",
+      "Task",
+      "Skill",
+      "mcp__filesystem__*",
+      "mcp__tavily__*",
+      "mcp__firecrawl__*",
+      "mcp__exa__*"
+    ],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(del *)",
+      "Bash(curl *)",
+      "mcp__gmail__send",
+      "mcp__slack__post"
+    ],
+    "deny": [
+      "Bash(format *)",
+      "Bash(shutdown *)"
+    ]
+  },
+  "hooks": {}
+}

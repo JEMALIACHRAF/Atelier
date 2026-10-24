@@ -1,0 +1,46 @@
+id: competitive_benchmark
+name: Benchmark concurrentiel
+short: Positionner votre client face à ses concurrents sur les critères qui comptent.
+icon: scale
+color: navy
+default_deliverables: [deck, report]
+estimated_duration_min: 40
+agents:
+  - framer
+  - hunter
+  - benchmarker
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_competitors: 4
+    max_dimensions: 4
+    max_slides: 10
+    duration_min: 12
+  standard:
+    max_competitors: 6
+    max_dimensions: 8
+    max_slides: 18
+    duration_min: 35
+  deep:
+    max_competitors: 10
+    max_dimensions: 12
+    max_slides: 25
+    duration_min: 70
+brief_hints:
+  - Client ou entreprise de référence
+  - Liste des concurrents à comparer
+  - Dimensions de benchmark (produit, prix, canaux, tech, etc.)
+  - Marché / segment
+form_fields:
+  - key: focal_company
+    label: Entreprise de référence
+    required: true
+  - key: competitors
+    label: Concurrents à comparer (3 à 8)
+    required: true
+    multiline: true
+  - key: dimensions
+    label: Dimensions à benchmarker
+    multiline: true

@@ -1,0 +1,36 @@
+id: operations_diagnostic
+name: Diagnostic opérationnel
+short: "Identifier les leviers de performance (coût, qualité, délai) sur une chaîne de valeur."
+icon: cog
+color: navy
+default_deliverables: [report, exec_summary]
+estimated_duration_min: 50
+agents:
+  - framer
+  - hunter
+  - analyst
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_slides: 10
+    duration_min: 15
+  standard:
+    max_slides: 20
+    duration_min: 45
+  deep:
+    max_slides: 32
+    duration_min: 85
+brief_hints:
+  - Entreprise ou unité étudiée
+  - Processus clés (production, supply, service client, etc.)
+  - Métriques disponibles (KPIs, benchmarks)
+  - Documents internes (upload fortement recommandé)
+form_fields:
+  - key: scope
+    label: Périmètre analysé
+    required: true
+  - key: pain_points
+    label: Points de douleur connus
+    multiline: true

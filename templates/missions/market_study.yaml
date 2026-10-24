@@ -1,0 +1,50 @@
+id: market_study
+name: Étude de marché
+short: Cartographier un marché, dimensionner, projeter.
+icon: chart
+color: navy
+default_deliverables: [deck, report, exec_summary]
+estimated_duration_min: 45
+agents:
+  - framer
+  - hunter
+  - analyst
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_hypotheses: 8
+    max_datapoints: 20
+    max_analyses: 5
+    max_slides: 10
+    duration_min: 15
+  standard:
+    max_hypotheses: 15
+    max_datapoints: 40
+    max_analyses: 10
+    max_slides: 20
+    duration_min: 45
+  deep:
+    max_hypotheses: 20
+    max_datapoints: 60
+    max_analyses: 15
+    max_slides: 30
+    duration_min: 90
+brief_hints:
+  - Secteur ou produit étudié
+  - Géographie (pays, région)
+  - Horizon temporel (2025-2027...)
+  - Questions prioritaires
+  - Contraintes ou angles particuliers
+form_fields:
+  - key: sector
+    label: Secteur étudié
+    required: true
+  - key: geography
+    label: Géographie
+    required: true
+    default: Europe (UE + UK + Suisse)
+  - key: horizon
+    label: Horizon
+    default: 2025-2027

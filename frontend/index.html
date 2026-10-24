@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js" defer></script>
+</head>
+<body x-data="atelier()" x-init="init()" x-cloak>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <a href="#" class="brand" @click.prevent="goTo('dashboard')">
+      <span class="brand-mark">A</span>
+      <span class="brand-text">Atelier</span>
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="#" :class="{active: view==='dashboard'}" @click.prevent="goTo('dashboard')">
+      <span class="nav-icon">▦</span>
+      <span>Mes études</span>
+    </a>
+    <a href="#" :class="{active: view==='new' || view==='new-brief'}" @click.prevent="goTo('new')">
+      <span class="nav-icon">+</span>
+      <span>Nouvelle étude</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-foot">
+    <div class="sys-status">
+      <span class="sys-dot" :class="{ok: health.ok, warn: !health.ok}"></span>
+      <span x-text="health.ok ? 'Système opérationnel' : 'Vérification requise'"></span>
+    </div>
+    <div class="sys-meta">
+      <span x-text="'Mode ' + (health.mode || '—')"></span>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <section x-show="view==='dashboard'" class="view">
+    <header class="page-head">
+      <div>
+        <h1>Mes études</h1>
+        <p class="muted" x-text="(engagements.length + backlog.length) + ' étude(s) · ' + nbDone + ' terminée(s)'"></p>
+      </div>
+      <button class="btn btn-primary" @click="goTo('new')">+ Nouvelle étude</button>
+    </header>
+
+    <div x-show="(engagements.length + backlog.length) === 0" class="empty-state">
+      <div class="empty-illus">
+        <svg viewBox="0 0 120 120" width="88" height="88">
+          <rect x="20" y="25" width="80" height="75" rx="4" fill="var(--surface-2)" stroke="var(--line)"/>
+          <line x1="20" y1="40" x2="100" y2="40" stroke="var(--line)"/>
+          <circle cx="27" cy="33" r="2" fill="var(--line)"/>
+          <circle cx="34" cy="33" r="2" fill="var(--line)"/>
+          <line x1="30" y1="55" x2="80" y2="55" stroke="var(--line)" stroke-width="2"/>
+          <line x1="30" y1="65" x2="90" y2="65" stroke="var(--line)" stroke-width="2"/>
+          <line x1="30" y1="75" x2="70" y2="75" stroke="var(--line)" stroke-width="2"/>
+          <line x1="30" y1="85" x2="85" y2="85" stroke="var(--line)" stroke-width="2"/>
+        </svg>
+      </div>
+      <h2>Aucune étude pour le moment</h2>
+      <p>Lancez votre première étude en choisissant un type de mission.</p>
+      <button class="btn btn-primary" @click="goTo('new')">Démarrer</button>
+    </div>
+
+    <!-- EN COURS -->
+    <template x-if="activeList.length > 0">
+      <div class="section">
+        <div class="section-head">
+          <h2>En cours</h2>
+          <span class="badge" x-text="activeList.length"></span>
+        </div>
+        <div class="cards">
+          <template x-for="e in activeList" :key="e.slug">
+            <article class="card" @click="openDetail(e.slug)">
+              <div class="card-head">
+                <span class="chip" :class="'chip-'+(e.mission_type || 'market_study')" x-text="e.mission_name || missionNameFromType(e.mission_type)"></span>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span class="dot-anim" x-show="e.running" title="En cours"></span>
+                  <button x-show="e.running" class="btn-x" @click.stop="stopEngagement(e.slug)" title="Arrêter cette étude">■</button>
+                </div>
+              </div>
+              <h3 x-text="e.title"></h3>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" :style="'width:' + stageProgress(e.stage) + '%'"></div>
+                </div>
+                <span class="progress-label" x-text="stageLabel(e.stage)"></span>
+              </div>
+            </article>
+          </template>
+        </div>
+      </div>
+    </template>
+
+    <!-- A LANCER -->
+    <template x-if="backlog.length > 0">
+      <div class="section">
+        <div class="section-head">
+          <h2>À lancer</h2>
+          <span class="badge" x-text="backlog.length"></span>
+        </div>
+        <div class="cards">
+          <template x-for="e in backlog" :key="e.slug">
+            <article class="card card-backlog">
+              <div class="card-head">
+                <span class="chip" :class="'chip-'+(e.mission_type || 'market_study')" x-text="e.mission_name || missionNameFromType(e.mission_type)"></span>
+              </div>
+              <h3 x-text="e.title"></h3>
+              <div class="card-cta">
+                <button class="btn btn-sm btn-ghost" @click.stop="openDetail(e.slug)">Détails</button>
+                <button class="btn btn-sm btn-primary" @click.stop="startEngagement(e.slug)">Lancer</button>
+              </div>
+            </article>
+          </template>
+        </div>
+      </div>
+    </template>
+
+    <!-- TERMINEES -->
+    <template x-if="doneList.length > 0">
+      <div class="section">
+        <div class="section-head">
+          <h2>Terminées</h2>
+          <span class="badge" x-text="doneList.length"></span>
+        </div>
+        <div class="cards">
+          <template x-for="e in doneList" :key="e.slug">
+            <article class="card card-done" @click="openDetail(e.slug)">
+              <div class="card-head">
+                <span class="chip" :class="'chip-'+(e.mission_type || 'market_study')" x-text="e.mission_name || missionNameFromType(e.mission_type)"></span>
+                <span class="status-pill ok">Prête</span>
+              </div>
+              <h3 x-text="e.title"></h3>
+              <div class="card-meta">
+                <span x-text="(e.deliverables || []).length + ' livrable(s)'"></span>
+              </div>
+            </article>
+          </template>
+        </div>
+      </div>
+    </template>
+  </section>
+
+  <!-- NEW: step 1 - choisir le type de mission -->
+  <section x-show="view==='new'" class="view">
+    <header class="page-head">
+      <div>
+        <button class="btn btn-link" @click="goTo('dashboard')">← Mes études</button>
+        <h1>Nouvelle étude</h1>
+        <p class="muted">Étape 1 sur 2 · Choisissez le type de mission</p>
+      </div>
+    </header>
+
+    <div class="mission-grid">
+      <template x-for="m in missions" :key="m.id">
+        <article class="mission-card" :class="'mission-'+(m.color || 'navy')" @click="selectMission(m)">
+          <div class="mission-icon" :class="'ic-'+(m.icon || 'chart')"></div>
+          <h3 x-text="m.name"></h3>
+          <p x-text="m.short"></p>
+          <div class="mission-meta">
+            <span x-text="(m.agents || []).length + ' agents'"></span>
+            <span x-text="'~' + (m.estimated_duration_min || 45) + ' min'"></span>
+          </div>
+        </article>
+      </template>
+    </div>
+  </section>
+
+  <!-- NEW: step 2 - brief + upload -->
+  <section x-show="view==='new-brief'" class="view">
+    <header class="page-head">
+      <div>
+        <button class="btn btn-link" @click="goTo('new')">← Changer de mission</button>
+        <h1 x-text="selectedMission?.name || 'Nouvelle étude'"></h1>
+        <p class="muted">Étape 2 sur 2 · Décrivez le contexte et joignez vos documents</p>
+      </div>
+    </header>
+
+    <form class="form-sheet" @submit.prevent="createEngagement()">
+      <div class="form-row">
+        <label>Titre de l'étude</label>
+        <input type="text" x-model="form.title" placeholder="ex: Adoption des agents LLM dans le consulting EU" required>
+      </div>
+
+      <template x-for="fld in (selectedMission?.form_fields || [])" :key="fld.key">
+        <div class="form-row">
+          <label>
+            <span x-text="fld.label"></span>
+            <span class="req" x-show="fld.required">*</span>
+          </label>
+          <template x-if="fld.options">
+            <select :name="fld.key" @change="form.form_data[fld.key] = $event.target.value">
+              <option value="">Choisir...</option>
+              <template x-for="opt in fld.options" :key="opt">
+                <option :value="opt" x-text="opt" :selected="form.form_data[fld.key] === opt"></option>
+              </template>
+            </select>
+          </template>
+          <template x-if="!fld.options && fld.multiline">
+            <textarea rows="3" :value="form.form_data[fld.key] || fld.default || ''" @input="form.form_data[fld.key] = $event.target.value"></textarea>
+          </template>
+          <template x-if="!fld.options && !fld.multiline">
+            <input type="text" :value="form.form_data[fld.key] || fld.default || ''" @input="form.form_data[fld.key] = $event.target.value" :required="fld.required">
+          </template>
+        </div>
+      </template>
+
+      <div class="form-row">
+        <label>Brief détaillé</label>
+        <textarea x-model="form.brief" rows="10" required placeholder="Décrivez la question centrale, le contexte, le périmètre, les hypothèses, les attentes sur les livrables..."></textarea>
+        <small class="hint" x-show="selectedMission?.brief_hints?.length">
+          Pensez à préciser:
+          <template x-for="h in selectedMission.brief_hints" :key="h">
+            <span class="hint-chip" x-text="h"></span>
+          </template>
+        </small>
+      </div>
+
+      <div class="form-row">
+        <label>Documents à joindre (optionnel)</label>
+        <div class="upload-zone"
+             @dragover.prevent="dragging = true"
+             @dragleave.prevent="dragging = false"
+             @drop.prevent="handleDrop($event)"
+             :class="{dragging: dragging}"
+             @click="$refs.fileInput.click()">
+          <input type="file" x-ref="fileInput" multiple @change="handleFiles($event.target.files)" style="display:none" accept=".pdf,.docx,.doc,.xlsx,.xls,.csv,.txt,.md,.png,.jpg,.jpeg,.pptx,.ppt,.json">
+          <div x-show="pendingFiles.length === 0">
+            <strong>Glissez vos fichiers ici</strong> ou cliquez pour en choisir<br>
+            <small class="muted">PDF, Word, Excel, images · 25 MB max par fichier</small>
+          </div>
+          <ul class="file-list" x-show="pendingFiles.length > 0">
+            <template x-for="(f, idx) in pendingFiles" :key="f.name + idx">
+              <li>
+                <span class="file-icon">▤</span>
+                <span class="file-name" x-text="f.name"></span>
+                <span class="file-size" x-text="formatSize(f.size)"></span>
+                <button type="button" class="btn-x" @click.stop="removeFile(idx)" title="Retirer">×</button>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Profondeur de l'étude</label>
+        <div class="speed-opts">
+          <label class="speed-opt">
+            <input type="radio" name="speed" value="express" x-model="form.speed_mode">
+            <span class="opt-tile">
+              <strong>Express</strong>
+              <span class="opt-sub" x-text="speedDurationLabel('express')"></span>
+              <span class="opt-desc">Scope réduit. Pré-brief, pas final.</span>
+            </span>
+          </label>
+          <label class="speed-opt">
+            <input type="radio" name="speed" value="standard" x-model="form.speed_mode">
+            <span class="opt-tile">
+              <strong>Standard</strong>
+              <span class="opt-sub" x-text="speedDurationLabel('standard')"></span>
+              <span class="opt-desc">Qualité consultant solide.</span>
+            </span>
+          </label>
+          <label class="speed-opt">
+            <input type="radio" name="speed" value="deep" x-model="form.speed_mode">
+            <span class="opt-tile">
+              <strong>Exhaustif</strong>
+              <span class="opt-sub" x-text="speedDurationLabel('deep')"></span>
+              <span class="opt-desc">Scope maximal, sujets structurants.</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Livrables demandés</label>
+        <div class="deliverable-opts">
+          <label class="deliv-opt">
+            <input type="checkbox" value="deck" x-model="form.deliverables">
+            <span class="opt-tile">
+              <span class="opt-icon">▦</span>
+              <span>Deck PowerPoint</span>
+            </span>
+          </label>
+          <label class="deliv-opt">
+            <input type="checkbox" value="report" x-model="form.deliverables">
+            <span class="opt-tile">
+              <span class="opt-icon">▤</span>
+              <span>Rapport Word</span>
+            </span>
+          </label>
+          <label class="deliv-opt">
+            <input type="checkbox" value="exec_summary" x-model="form.deliverables">
+            <span class="opt-tile">
+              <span class="opt-icon">▣</span>
+              <span>Exec summary PDF</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" @click="goTo('new')">Retour</button>
+        <button type="submit" class="btn btn-primary" :disabled="submitting">
+          <span x-show="!submitting">Créer et lancer</span>
+          <span x-show="submitting">Création...</span>
+        </button>
+      </div>
+
+      <div x-show="formError" class="form-error" x-text="formError"></div>
+    </form>
+  </section>
+
+  <!-- DETAIL -->
+  <section x-show="view==='detail'" class="view">
+    <header class="page-head">
+      <div>
+        <button class="btn btn-link" @click="goTo('dashboard')">← Mes études</button>
+        <div class="detail-title">
+          <span class="chip" :class="'chip-'+(detail.mission_type || 'market_study')" x-text="detail.mission_name || missionNameFromType(detail.mission_type)"></span>
+          <h1 x-text="detail.title || 'Chargement...'"></h1>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn btn-stop" x-show="detail.running" @click="stopEngagement(detail.slug)" :disabled="stopping">
+          <span x-show="!stopping">■ Arrêter l'étude</span>
+          <span x-show="stopping">Arrêt en cours...</span>
+        </button>
+        <button class="btn btn-ghost" x-show="detail.stage === 'done'" @click="showRevision = true">Demander une révision</button>
+        <button class="btn btn-ghost" x-show="detail.stage === 'done' || (detail.deliverables && detail.deliverables.length > 0)" @click="activeTab = 'livrables'">Voir les livrables</button>
+        <button class="btn btn-primary" x-show="detail.stage === 'backlog'" @click="startEngagement(detail.slug)">Lancer l'étude</button>
+        <button class="btn btn-ghost" x-show="detail.stage !== 'done' && detail.stage !== 'backlog' && !detail.running" @click="startEngagement(detail.slug)">Reprendre</button>
+      </div>
+    </header>
+
+    <!-- status banner -->
+    <div class="status-banner" :class="'status-'+detail.stage">
+      <div class="status-main">
+        <span class="status-label" x-text="detail.stage_label || stageLabel(detail.stage)"></span>
+        <span class="status-sub" x-show="detail.running">travail en cours...</span>
+      </div>
+      <div class="status-steps">
+        <template x-for="(step, i) in workflowSteps" :key="step.key">
+          <div class="status-step" :class="stepClass(step.key)">
+            <span class="step-dot"></span>
+            <span class="step-label" x-text="step.label"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- tabs -->
+    <div class="tabs">
+      <button :class="{active: activeTab === 'brief'}" @click="activeTab = 'brief'">Brief</button>
+      <button :class="{active: activeTab === 'livrables'}" @click="activeTab = 'livrables'">
+        Livrables
+        <span class="tab-badge" x-show="(detail.deliverables || []).length > 0" x-text="detail.deliverables.length"></span>
+      </button>
+      <button :class="{active: activeTab === 'attachments'}" @click="activeTab = 'attachments'">
+        Documents
+        <span class="tab-badge" x-show="(detail.attachments || []).length > 0" x-text="detail.attachments.length"></span>
+      </button>
+      <button :class="{active: activeTab === 'advanced'}" @click="activeTab = 'advanced'">Avancé</button>
+    </div>
+
+    <div class="tab-panel" x-show="activeTab === 'brief'">
+      <div class="brief-view">
+        <div x-show="Object.keys(detail.form_data || {}).length > 0" class="form-summary">
+          <h3>Paramètres de mission</h3>
+          <dl>
+            <template x-for="(v, k) in detail.form_data" :key="k">
+              <template x-if="v">
+                <div>
+                  <dt x-text="k"></dt>
+                  <dd x-text="v"></dd>
+                </div>
+              </template>
+            </template>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" x-show="activeTab === 'livrables'">
+      <div class="deliverables-grid">
+        <template x-for="d in detail.deliverables || []" :key="d.name">
+          <a :href="'/api/engagements/'+encodeURIComponent(detail.slug)+'/file/'+encodeURIComponent(d.name)" download class="deliv-card">
+            <div class="deliv-icon" x-text="deliverableIcon(d.name)"></div>
+            <div class="deliv-info">
+              <div class="deliv-name" x-text="d.name"></div>
+              <div class="deliv-size muted" x-text="formatSize(d.size)"></div>
+            </div>
+            <div class="deliv-download">↓</div>
+          </a>
+        </template>
+        <div x-show="(detail.deliverables || []).length === 0" class="empty-sub">
+          Aucun livrable produit pour le moment. Lancez l'étude pour les générer.
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" x-show="activeTab === 'attachments'">
+      <div class="attach-head">
+        <h3>Documents joints</h3>
+        <label class="btn btn-sm btn-ghost">
+          + Ajouter
+          <input type="file" multiple @change="uploadToExisting(detail.slug, $event.target.files)" style="display:none">
+        </label>
+      </div>
+      <ul class="attach-list">
+        <template x-for="a in detail.attachments || []" :key="a.name">
+          <li>
+            <span class="file-icon">▤</span>
+            <span class="file-name" x-text="a.name"></span>
+            <span class="file-size muted" x-text="formatSize(a.size)"></span>
+            <button class="btn-x" @click="deleteAttachment(detail.slug, a.name)">×</button>
+          </li>
+        </template>
+      </ul>
+      <div x-show="(detail.attachments || []).length === 0" class="empty-sub">
+        Aucun document joint. Les documents aident le Hunter à démarrer avec vos sources primaires.
+      </div>
+    </div>
+
+    <div class="tab-panel" x-show="activeTab === 'advanced'">
+      <details class="debug-details">
+        <summary>Journal technique</summary>
+        <div class="log" x-ref="logbox">
+          <template x-for="(line, i) in logLines" :key="i">
+            <div class="log-line" :class="'log-'+(line.type || 'info')">
+              <span class="log-time" x-text="line.ts"></span>
+              <span class="log-msg" x-text="line.msg"></span>
+            </div>
+          </template>
+          <div x-show="logLines.length === 0" class="muted" style="padding: 20px;">
+            Pas de journal pour le moment.
+          </div>
+        </div>
+      </details>
+      <div class="debug-meta">
+        <h4>Métadonnées de l'étude</h4>
+        <dl>
+          <div><dt>slug</dt><dd x-text="detail.slug"></dd></div>
+          <div><dt>mission_type</dt><dd x-text="detail.mission_type"></dd></div>
+          <div><dt>stage</dt><dd x-text="detail.stage"></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVISION MODAL -->
+  <div x-show="showRevision" class="modal-backdrop" @click="showRevision = false">
+    <div class="modal" @click.stop>
+      <h3>Demander une révision</h3>
+      <p class="muted">Décrivez précisément ce qui doit être revu dans le livrable. L'équipe reprendra uniquement les éléments concernés.</p>
+      <textarea x-model="revisionText" rows="6" placeholder="Ex: La slide 7 n'est pas assez tranchée. Reformule le titre comme un message, pas un label. Ajoute un chart de sensibilité à l'analyse A7."></textarea>
+      <div class="form-actions">
+        <button class="btn btn-ghost" @click="showRevision = false">Annuler</button>
+        <button class="btn btn-primary" @click="submitRevision()" :disabled="revisionSubmitting || revisionText.length < 5">
+          <span x-show="!revisionSubmitting">Lancer la révision</span>
+          <span x-show="revisionSubmitting">Envoi...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

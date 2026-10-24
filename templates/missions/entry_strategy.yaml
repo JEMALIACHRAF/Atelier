@@ -1,0 +1,46 @@
+id: entry_strategy
+name: Stratégie d'entrée
+short: "Entrer sur un marché géographique ou sectoriel: où, comment, à quel coût."
+icon: compass
+color: navy
+default_deliverables: [deck, report]
+estimated_duration_min: 50
+agents:
+  - framer
+  - hunter
+  - analyst
+  - strategist
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_options: 3
+    max_slides: 12
+    duration_min: 18
+  standard:
+    max_options: 3
+    max_slides: 20
+    duration_min: 45
+  deep:
+    max_options: 4
+    max_slides: 30
+    duration_min: 90
+brief_hints:
+  - Marché cible (pays ou segment)
+  - Produit ou service à lancer
+  - Client qui veut entrer
+  - Contraintes (délai, budget, make vs buy)
+form_fields:
+  - key: target_market
+    label: Marché cible
+    required: true
+  - key: offering
+    label: Offre à lancer
+    required: true
+  - key: entrant
+    label: Entreprise qui entre
+    required: true
+  - key: constraints
+    label: Contraintes connues
+    multiline: true

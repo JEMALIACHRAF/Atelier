@@ -1,0 +1,26 @@
+# 9
+s = slide("4 decisions pour Invent : rendre ses actifs IA visibles d'abord, valider l'angle souverain ensuite",
+          "Source : 05_synthesis.md v2 (Recommandations) ; D66, D30, D42 (non verifie au primaire). Detail des lacunes de donnees : annexe A1 (slide 10).")
+table(s, 0.6, 1.85, 12.2, [["#", "Decision", "Horizon", "Owner", "KPI"],
+   ["1", "Lancer un chantier d'attribution : rattacher publiquement a Invent des actifs IA du groupe (offre, partenariat ou etude)", "6 mois", "Direction de Capgemini Invent + marketing d'offres", "Actifs IA publiquement attribues a Invent : baseline 0 [D66], cible >= 2"],
+   ["2", "Soumettre l'angle \"IA agentique souveraine europeenne\" au test go/no-go avant de l'adopter", "T1-T2 2027", "CEO d'Invent", "4 tests valides ; no-go si l'attribution echoue a 6 mois ou si >= 2 concurrents ont >= 2 partenariats souverains equivalents"],
+   ["3", "Ne pas construire le positionnement 2027 sur l'echelle ni sur le seul outcome-based [D30 ; D42, non verifie au primaire]", "Immediat (cadrage du message 2027)", "Direction d'Invent", "Aucun claim d'echelle dans les supports Invent 2027"],
+   ["4", "Relancer l'etude en mode standard avant toute communication de positionnement", "4 semaines", "Chief / equipe engagement", "D2, D3, D4 passees en conclusive ; >= 80 % des S# cites verifies au primaire (lacunes : annexe A1)"]],
+   [0.4, 4.6, 1.8, 2.3, 3.1], 11, 0.9)
+callout(s, 0.6, 6.0, 12.2, 0.75, "Ordre de priorite", "L'attribution passe avant l'angle : sans rattachement des actifs groupe a Invent, aucun angle 2027 ne profite a Invent.", ORG, 11.5)
+
+# 10
+s = slide("Annexe A1 : methodologie et 5 lacunes de donnees - perimetre express reduit, 59 sources sur 67 non verifiees au primaire",
+          "Source : decisions 2026-10-23 (scope-express), 2026-10-24 (prebrief-honnete) ; 02_data/sources.json ; D26, D37, D55-D58, D65-D69, DP02, DP04, DP07, DP09. Bibliographie complete (67 sources, URL) dans report.docx.")
+bullets(s, 0.6, 1.8, 5.6, 5.0, [("Perimetre reduit :", "4 concurrents ; PwC AI CoE retire (plafond express, perimetre flou) ; EY, KPMG, IBM hors perimetre."),
+    ("D3 fusionnee :", "publications + conferences en une dimension (plafond de 4), sous-scores lacunaires."),
+    ("Notation :", "echelle 1-5 ; M = mediane des 4 concurrents ; non conclusive si plus de 2 acteurs en ND ; ND != faible. Override D4 valide par le Chief."),
+    ("Sources :", "8 sur 67 verifiees par fetch (S2, S4, S15, S19, S40, S53, S55, S56) ; 59 non verifiees au primaire, dont S7-S9 (D22) et S37 (D42) qui portent l'angle 2027."),
+    ("Geographie :", "groupe et mondial ; vue Europe quasi absente (D37). 2024-2026, sources publiques."),
+    ("Hypotheses :", "8 sur 8 traitees, aucune confirmee ni refutee.")], 11)
+table(s, 6.4, 1.85, 6.4, [["#", "Lacune de donnees (mode standard)", "Source a interroger"],
+   ["1", "Rattachement a Invent [D66, D69]", "capgemini.com/invent, communiques, organigramme Data & AI"],
+   ["2", "Tiers hyperscalers [D65]", "AWS Partner Finder, Microsoft Partner Finder, Google Cloud Partner Advantage"],
+   ["3", "Effectifs data & IA, repartition Europe [D68, D69, D37]", "Document d'enregistrement universel, transcript CMD, Deloitte AI & Data"],
+   ["4", "References clients agentiques ; partenariats souverains concurrents [DP02, DP04, DP07, D63]", "Comptage total / Europe / industrie ; qualifier les listings McKinsey"],
+   ["5", "D3 et PwC [D26, D55-D58, DP09]", "Programmes speakers, reprises presse ; reintegrer PwC ; verifier S7-S9, S37"]], [0.4, 3.0, 3.0], 10, 0.75)

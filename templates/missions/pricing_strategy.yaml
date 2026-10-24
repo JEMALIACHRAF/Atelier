@@ -1,0 +1,40 @@
+id: pricing_strategy
+name: Stratégie de pricing
+short: Positionner les prix, construire une architecture de pricing, projeter l'impact.
+icon: tag
+color: accent
+default_deliverables: [deck, exec_summary]
+estimated_duration_min: 40
+agents:
+  - framer
+  - hunter
+  - analyst
+  - strategist
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_slides: 10
+    duration_min: 15
+  standard:
+    max_slides: 18
+    duration_min: 40
+  deep:
+    max_slides: 28
+    duration_min: 80
+brief_hints:
+  - Produit ou gamme concernée
+  - Marché et concurrents
+  - Modèle actuel de pricing
+  - Objectif (volume, marge, repositionnement)
+form_fields:
+  - key: product
+    label: Produit ou gamme
+    required: true
+  - key: current_model
+    label: Modèle de pricing actuel
+    multiline: true
+  - key: objective
+    label: Objectif
+    options: [Volume, Marge, Repositionnement, Lancement nouveau produit]

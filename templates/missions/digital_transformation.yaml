@@ -1,0 +1,37 @@
+id: digital_transformation
+name: Diagnostic transformation digitale
+short: Mesurer la maturité digitale et dessiner la roadmap de transformation.
+icon: bolt
+color: accent
+default_deliverables: [deck, report, exec_summary]
+estimated_duration_min: 55
+agents:
+  - framer
+  - hunter
+  - analyst
+  - strategist
+  - synthesizer
+  - producer
+  - partner_review
+speed_modes:
+  express:
+    max_slides: 12
+    duration_min: 18
+  standard:
+    max_slides: 22
+    duration_min: 50
+  deep:
+    max_slides: 35
+    duration_min: 95
+brief_hints:
+  - Entreprise ou division
+  - Secteur et taille
+  - État des lieux digital connu
+  - Ambition (customer experience, data, automation, IA, etc.)
+form_fields:
+  - key: company
+    label: Entreprise
+    required: true
+  - key: ambition_scope
+    label: Périmètre de la transformation
+    multiline: true
